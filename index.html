@@ -46,15 +46,56 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
+            <!-- Gamification Header / Hero Status Bar -->
+            <div class="hero-status-card">
+                <div class="hero-profile">
+                    <div class="avatar-box">
+                        <i class="fa-solid fa-user-ninja"></i>
+                    </div>
+                    <div class="hero-info">
+                        <h3>Dev PHP Hero <span id="hero-level-badge" class="level-badge">Nível 1: Aprendiz</span></h3>
+                        <p id="hero-title-text">Inicie sua saga no desenvolvimento web com PHP!</p>
+                    </div>
+                </div>
+                <div class="xp-container">
+                    <div class="xp-label">
+                        <span>XP de Conhecimento</span>
+                        <span id="xp-text">0 / 500 XP</span>
+                    </div>
+                    <div class="xp-bar-bg">
+                        <div id="xp-bar-fill" class="xp-bar-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="badges-mini-bar">
+                    <span class="badge-title"><i class="fa-solid fa-award"></i> Insígnias:</span>
+                    <div id="badges-icons-container" class="badges-icons">
+                        <span class="badge-icon locked" title="Mestre da Sintaxe (Módulo 1)"><i class="fa-solid fa-code"></i></span>
+                        <span class="badge-icon locked" title="Explorador do Servidor (Módulo 2)"><i class="fa-solid fa-server"></i></span>
+                        <span class="badge-icon locked" title="Guardião do JSON (Módulo 3)"><i class="fa-solid fa-database"></i></span>
+                        <span class="badge-icon locked" title="Agente das APIs (Módulo 4)"><i class="fa-solid fa-network-wired"></i></span>
+                        <span class="badge-icon locked" title="Arquiteto Full-Stack (Módulo 5)"><i class="fa-solid fa-crown"></i></span>
+                    </div>
+                </div>
+            </div>
+
             <header class="top-header">
                 <div class="header-info">
-                    <h1>Curso Moderno de PHP para Web</h1>
-                    <p>Aprenda PHP com a metodologia Prática para a Teoria & GitHub Pages Ready</p>
+                    <h1>Curso Gamificado de PHP - A Saga do Desenvolvedor</h1>
+                    <p>Aprenda PHP com a metodologia Prática para a Teoria & Ganhe Badges ao Longo da Formação</p>
                 </div>
             </header>
 
             <!-- Module 1 -->
             <section id="module-1" class="module-section active">
+                <!-- Story Narrative Box -->
+                <div class="story-box">
+                    <div class="story-header">
+                        <i class="fa-solid fa-scroll story-icon"></i>
+                        <h4>Capítulo 1: O Despertar da Sintaxe</h4>
+                    </div>
+                    <p class="story-text">Você acaba de entrar no Reino do Desenvolvimento Backend! Para dar seus primeiros passos e decifrar os códigos antigos, sua primeira missão é dominar como o PHP recebe entradas através de formulários HTML, calcular idades e desvendar o segredo dos astros no Desafio do Zodíaco.</p>
+                </div>
+
                 <div class="module-header">
                     <span class="badge">Módulo 1</span>
                     <h2>Fundamentos da Sintaxe, Formulários HTML e Cálculo de Idade</h2>
@@ -287,11 +328,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <button id="btn-descobrir-signo" class="btn btn-accent"><i class="fa-solid fa-star"></i> Descobrir Meu Signo</button>
                         <div id="out-signo" class="sim-output hidden"></div>
                     </div>
+
+                    <!-- Mission Reward Action -->
+                    <div class="mission-claim-box">
+                        <button class="btn btn-claim" onclick="claimBadge('m1', 'Mestre da Sintaxe', 100)"><i class="fa-solid fa-shield-halved"></i> Concluir Capítulo 1 & Resgatar Badge "+100 XP"</button>
+                    </div>
                 </div>
             </section>
 
             <!-- Module 2 -->
             <section id="module-2" class="module-section hidden">
+                <!-- Story Narrative Box -->
+                <div class="story-box">
+                    <div class="story-header">
+                        <i class="fa-solid fa-scroll story-icon"></i>
+                        <h4>Capítulo 2: Os Segredos do Servidor</h4>
+                    </div>
+                    <p class="story-text">Ao avançar pela Cidadela dos Servidores, você precisa entender a diferença entre o que acontece localmente e as superglobais do servidor. Inspecione dados do cliente e gerencie sessões e cookies para conquistar o controle do ambiente!</p>
+                </div>
+
                 <div class="module-header">
                     <span class="badge">Módulo 2</span>
                     <h2>Variáveis Locais vs. Variáveis de Servidor ($_SERVER, $_SESSION, $_COOKIE)</h2>
@@ -393,10 +448,24 @@ setcookie('ultima_visita', $dataHoraAtual, time() + (86400 * 30), "/");
                         <button id="btn-carregar-server-info" class="btn btn-primary"><i class="fa-solid fa-server"></i> Inspecionar Dados de Servidor</button>
                         <div id="out-server-info" class="sim-output hidden"></div>
                     </div>
+
+                    <!-- Mission Reward Action -->
+                    <div class="mission-claim-box">
+                        <button class="btn btn-claim" onclick="claimBadge('m2', 'Explorador do Servidor', 100)"><i class="fa-solid fa-shield-halved"></i> Concluir Capítulo 2 & Resgatar Badge "+100 XP"</button>
+                    </div>
                 </div>
             </section>
             <!-- Module 3 -->
             <section id="module-3" class="module-section hidden">
+                <!-- Story Narrative Box -->
+                <div class="story-box">
+                    <div class="story-header">
+                        <i class="fa-solid fa-scroll story-icon"></i>
+                        <h4>Capítulo 3: As Crônicas da Persistência</h4>
+                    </div>
+                    <p class="story-text">Sua jornada avança para o Cofre de Dados! Sem depender de bancos de dados complexos, você aprenderá o feitiço da persistência guardando e manipulando registros estruturados em arquivos JSON.</p>
+                </div>
+
                 <div class="module-header">
                     <span class="badge">Módulo 3</span>
                     <h2>Gravação de Dados em Arquivos JSON & Mini CRUD</h2>
@@ -512,10 +581,24 @@ if (isset($_GET['deletar'])) {
                             <p class="empty-msg">Nenhum registro encontrado no arquivo JSON.</p>
                         </div>
                     </div>
+
+                    <!-- Mission Reward Action -->
+                    <div class="mission-claim-box">
+                        <button class="btn btn-claim" onclick="claimBadge('m3', 'Guardião do JSON', 100)"><i class="fa-solid fa-shield-halved"></i> Concluir Capítulo 3 & Resgatar Badge "+100 XP"</button>
+                    </div>
                 </div>
             </section>
             <!-- Module 4 -->
             <section id="module-4" class="module-section hidden">
+                <!-- Story Narrative Box -->
+                <div class="story-box">
+                    <div class="story-header">
+                        <i class="fa-solid fa-scroll story-icon"></i>
+                        <h4>Capítulo 4: O Portal Seguro & As Redes Distantes</h4>
+                    </div>
+                    <p class="story-text">Chegou a hora de proteger seus portais! Criptografe senhas com hash antes de salvar em JSON e aprenda a se comunicar com reinos externos consumindo APIs públicas de previsão do tempo!</p>
+                </div>
+
                 <div class="module-header">
                     <span class="badge">Módulo 4</span>
                     <h2>Login Seguro com Criptografia & Consumo de APIs Públicas</h2>
@@ -654,10 +737,24 @@ if ($respostaJson !== false) {
                         <button id="btn-consultar-clima" class="btn btn-primary"><i class="fa-solid fa-cloud-sun"></i> Consultar Previsão do Tempo</button>
                         <div id="out-clima-info" class="sim-output hidden"></div>
                     </div>
+
+                    <!-- Mission Reward Action -->
+                    <div class="mission-claim-box">
+                        <button class="btn btn-claim" onclick="claimBadge('m4', 'Agente das APIs', 100)"><i class="fa-solid fa-shield-halved"></i> Concluir Capítulo 4 & Resgatar Badge "+100 XP"</button>
+                    </div>
                 </div>
             </section>
             <!-- Module 5 -->
             <section id="module-5" class="module-section hidden">
+                <!-- Story Narrative Box -->
+                <div class="story-box">
+                    <div class="story-header">
+                        <i class="fa-solid fa-scroll story-icon"></i>
+                        <h4>Capítulo Final: A Coroação do Desenvolvedor</h4>
+                    </div>
+                    <p class="story-text">Sua prova final chegou! Una todos os poderes adquiridos — formulários, lógica, manipulação de arquivos JSON, autenticação criptografada — para construir um sistema web completo e conquistar o título supremo de Arquiteto Full-Stack PHP!</p>
+                </div>
+
                 <div class="module-header">
                     <span class="badge">Módulo 5</span>
                     <h2>Projeto Integrador Final: Sistema CRUD Completo com JSON</h2>
@@ -769,6 +866,11 @@ if (isset($_GET['acao']) &amp;&amp; $_GET['acao'] === 'deletar') {
                         <li><i class="fa-solid fa-check text-success"></i> O sistema permite Adicionar, Listar, Editar e Deletar registros sem erros?</li>
                         <li><i class="fa-solid fa-check text-success"></i> A interface web é limpa e responsiva?</li>
                     </ul>
+
+                    <!-- Mission Reward Action -->
+                    <div class="mission-claim-box" style="margin-top:20px;">
+                        <button class="btn btn-claim" onclick="claimBadge('m5', 'Arquiteto Full-Stack', 100)"><i class="fa-solid fa-crown"></i> Concluir Projeto Final & Resgatar Badge Suprema "+100 XP"</button>
+                    </div>
                 </div>
             </section>
         </main>

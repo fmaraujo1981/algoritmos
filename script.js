@@ -1,5 +1,125 @@
+// Gamification Engine (XP, Levels, Badges, LocalStorage)
+let gameState = {
+    xp: 0,
+    maxXp: 500,
+    level: 1,
+    badges: {
+        m1: false,
+        m2: false,
+        m3: false,
+        m4: false,
+        m5: false
+    }
+};
+
+function loadGamificationState() {
+    const saved = localStorage.getItem('php_course_gamification');
+    if (saved) {
+        try {
+            gameState = { ...gameState, ...JSON.parse(saved) };
+        } catch (e) {
+            console.error('Erro ao carregar progresso:', e);
+        }
+    }
+    updateGamificationUI();
+}
+
+function saveGamificationState() {
+    localStorage.setItem('php_course_gamification', JSON.stringify(gameState));
+}
+
+function claimBadge(moduleKey, badgeName, xpValue) {
+    if (gameState.badges[moduleKey]) {
+        showToast(`Você já conquistou a badge "${badgeName}"!`);
+        return;
+    }
+
+    gameState.badges[moduleKey] = true;
+    gameState.xp += xpValue;
+    if (gameState.xp > gameState.maxXp) gameState.xp = gameState.maxXp;
+
+    saveGamificationState();
+    updateGamificationUI();
+    showToast(`🏆 Conquista Desbloqueada: "${badgeName}"! (+${xpValue} XP)`);
+}
+
+function showToast(message) {
+    const existing = document.querySelector('.toast-achievement');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-achievement';
+    toast.innerHTML = `
+        <i class="fa-solid fa-award" style="font-size:1.8rem; color:#10b981;"></i>
+        <div>
+            <h4 style="margin:0; font-size:0.95rem;">Nova Conquista!</h4>
+            <p style="margin:0; font-size:0.85rem; color:var(--text-secondary);">${message}</p>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => toast.remove(), 500);
+    }, 3500);
+}
+
+function updateGamificationUI() {
+    const xpText = document.getElementById('xp-text');
+    const xpBarFill = document.getElementById('xp-bar-fill');
+    const levelBadge = document.getElementById('hero-level-badge');
+    const heroTitleText = document.getElementById('hero-title-text');
+    const badgesIconsContainer = document.getElementById('badges-icons-container');
+
+    if (!xpText) return;
+
+    // Calculate level based on XP
+    if (gameState.xp >= 500) {
+        gameState.level = 5;
+        levelBadge.innerText = 'Nível 5: Arquiteto PHP';
+        heroTitleText.innerText = 'Parabéns! Você dominou todos os segredos do PHP!';
+    } else if (gameState.xp >= 350) {
+        gameState.level = 4;
+        levelBadge.innerText = 'Nível 4: Mestre do Backend';
+        heroTitleText.innerText = 'Você já constrói sistemas seguros e consome APIs!';
+    } else if (gameState.xp >= 200) {
+        gameState.level = 3;
+        levelBadge.innerText = 'Nível 3: Guardião de Dados';
+        heroTitleText.innerText = 'Persistência em JSON dominada com sucesso!';
+    } else if (gameState.xp >= 100) {
+        gameState.level = 2;
+        levelBadge.innerText = 'Nível 2: Inspecionador Web';
+        heroTitleText.innerText = 'Entendendo servidores e variáveis superglobais.';
+    } else {
+        gameState.level = 1;
+        levelBadge.innerText = 'Nível 1: Aprendiz';
+        heroTitleText.innerText = 'Inicie sua saga no desenvolvimento web com PHP!';
+    }
+
+    const percentage = Math.min(100, Math.round((gameState.xp / gameState.maxXp) * 100));
+    xpText.innerText = `${gameState.xp} / ${gameState.maxXp} XP`;
+    xpBarFill.style.width = `${percentage}%`;
+
+    // Update Badges icons in mini bar
+    if (badgesIconsContainer) {
+        const icons = badgesIconsContainer.querySelectorAll('.badge-icon');
+        const badgeKeys = ['m1', 'm2', 'm3', 'm4', 'm5'];
+        badgeKeys.forEach((key, index) => {
+            if (icons[index]) {
+                if (gameState.badges[key]) {
+                    icons[index].classList.remove('locked');
+                } else {
+                    icons[index].classList.add('locked');
+                }
+            }
+        });
+    }
+}
+
 // Navigation and Theme Toggle logic
 document.addEventListener('DOMContentLoaded', () => {
+    loadGamificationState();
     // Navigation logic
     const navButtons = document.querySelectorAll('.nav-btn');
     const sections = document.querySelectorAll('.module-section');
