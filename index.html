@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Prático de PHP - Do Zero ao CRUD com JSON</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-brands fa-php logo-icon"></i>
+                <h2>PHP Prático</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-target="module-1">
+                    <span class="step-num">01</span>
+                    <span class="nav-title">Sintaxe & Formulários</span>
+                </button>
+                <button class="nav-btn" data-target="module-2">
+                    <span class="step-num">02</span>
+                    <span class="nav-title">Variáveis & Servidor</span>
+                </button>
+                <button class="nav-btn" data-target="module-3">
+                    <span class="step-num">03</span>
+                    <span class="nav-title">Persistência em JSON</span>
+                </button>
+                <button class="nav-btn" data-target="module-4">
+                    <span class="step-num">04</span>
+                    <span class="nav-title">Login & APIs</span>
+                </button>
+                <button class="nav-btn" data-target="module-5">
+                    <span class="step-num">05</span>
+                    <span class="nav-title">Projeto Integrador</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="theme-toggle-btn" class="theme-toggle">
+                    <i class="fa-solid fa-moon"></i> <span>Alternar Tema</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-info">
+                    <h1>Curso Moderno de PHP para Web</h1>
+                    <p>Aprenda PHP com a metodologia Prática para a Teoria & GitHub Pages Ready</p>
+                </div>
+            </header>
+
+            <!-- Module 1 -->
+            <section id="module-1" class="module-section active">
+                <div class="module-header">
+                    <span class="badge">Módulo 1</span>
+                    <h2>Fundamentos da Sintaxe, Formulários HTML e Cálculo de Idade</h2>
+                    <p class="description">Aprenda a sintaxe básica do PHP criando soluções práticas e evolutivas: do cálculo simples de idade ao desafio dos signos do zodíaco.</p>
+                </div>
+
+                <!-- Section 1.1 -->
+                <div class="card">
+                    <h3>1.1 Primeiros Passos com PHP & Formulários HTML</h3>
+                    <p>O PHP é uma linguagem executada no servidor. Para processar dados vindos de um formulário HTML, utilizamos o método <code>POST</code> ou <code>GET</code> e a superglobal correspondente (<code>$_POST</code> ou <code>$_GET</code>).</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>exemplo_formulario.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+// Verifica se o formulário foi enviado via método POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nome = $_POST["nome"];
+    echo "Olá, " . htmlspecialchars($nome) . "! Bem-vindo ao curso de PHP.";
+}
+?&gt;
+
+&lt;form method="POST" action=""&gt;
+    &lt;label for="nome"&gt;Digite seu nome:&lt;/label&gt;
+    &lt;input type="text" id="nome" name="nome" required&gt;
+    &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 1.2 -->
+                <div class="card">
+                    <h3>1.2 Exercício Etapa 1: Idade Fixo no Ano de 2026</h3>
+                    <p>Nesta primeira etapa, o usuário informa o seu ano de nascimento e o script calcula quantos anos ele completará ou completou no ano de <strong>2026</strong>.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>idade_2026.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+$idade2026 = null;
+if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; isset($_POST["ano_nascimento"])) {
+    $anoNascimento = (int)$_POST["ano_nascimento"];
+    $anoAlvo = 2026;
+    $idade2026 = $anoAlvo - $anoNascimento;
+}
+?&gt;
+
+&lt;form method="POST" action=""&gt;
+    &lt;label&gt;Ano de Nascimento:&lt;/label&gt;
+    &lt;input type="number" name="ano_nascimento" placeholder="Ex: 2000" required&gt;
+    &lt;button type="submit"&gt;Calcular Idade em 2026&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;?php if ($idade2026 !== null): ?&gt;
+    &lt;p class="result"&gt;Em 2026 você terá aproximadamente &lt;strong&gt;&lt;?php echo $idade2026; ?&gt;&lt;/strong&gt; anos.&lt;/p&gt;
+&lt;?php endif; ?&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 1.3 -->
+                <div class="card">
+                    <h3>1.3 Exercício Etapa 2: Atualizando Dinamicamente para o Ano Atual</h3>
+                    <p>Em vez de deixar o ano fixado em 2026, usamos a função nativa <code>date('Y')</code> do PHP para obter dinamicamente o ano corrente do servidor.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>idade_ano_atual.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+$idadeAtual = null;
+$anoAtual = (int)date('Y'); // Pega o ano atual automaticamente (ex: 2025/2026)
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; isset($_POST["ano_nasc_dinamico"])) {
+    $anoNasc = (int)$_POST["ano_nasc_dinamico"];
+    $idadeAtual = $anoAtual - $anoNasc;
+}
+?&gt;
+
+&lt;form method="POST" action=""&gt;
+    &lt;label&gt;Ano de Nascimento:&lt;/label&gt;
+    &lt;input type="number" name="ano_nasc_dinamico" required&gt;
+    &lt;button type="submit"&gt;Calcular para o Ano Atual (&lt;?php echo $anoAtual; ?&gt;)&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;?php if ($idadeAtual !== null): ?&gt;
+    &lt;p class="result"&gt;No ano de &lt;?php echo $anoAtual; ?&gt;, você faz ou fez &lt;strong&gt;&lt;?php echo $idadeAtual; ?&gt;&lt;/strong&gt; anos.&lt;/p&gt;
+&lt;?php endif; ?&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 1.4 -->
+                <div class="card">
+                    <h3>1.4 Exercício Etapa 3: Cálculo da Idade Exata (Dia, Mês e Ano)</h3>
+                    <p>Apenas subtrair o ano não considera se a pessoa já fez aniversário no ano corrente. Usamos a classe <code>DateTime</code> para calcular o intervalo de tempo exato em anos, meses e dias.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>idade_exata.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+$resultadoExato = null;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; !empty($_POST["data_nascimento"])) {
+    $dataNasc = new DateTime($_POST["data_nascimento"]);
+    $hoje = new DateTime(); // Data e hora atual
+    $diferenca = $hoje-&gt;diff($dataNasc);
+
+    $resultadoExato = [
+        'anos' =&gt; $diferenca-&gt;y,
+        'meses' =&gt; $diferenca-&gt;m,
+        'dias' =&gt; $diferenca-&gt;d
+    ];
+}
+?&gt;
+
+&lt;form method="POST" action=""&gt;
+    &lt;label&gt;Data Completa de Nascimento:&lt;/label&gt;
+    &lt;input type="date" name="data_nascimento" required&gt;
+    &lt;button type="submit"&gt;Calcular Idade Exata&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;?php if ($resultadoExato): ?&gt;
+    &lt;div class="result-box"&gt;
+        &lt;p&gt;Idade exata hoje:&lt;/p&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;strong&gt;&lt;?php echo $resultadoExato['anos']; ?&gt;&lt;/strong&gt; Anos&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;&lt;?php echo $resultadoExato['meses']; ?&gt;&lt;/strong&gt; Meses&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;&lt;?php echo $resultadoExato['dias']; ?&gt;&lt;/strong&gt; Dias&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;?php endif; ?&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 1.5 - Interactive Simulator -->
+                <div class="card simulator-card">
+                    <div class="simulator-badge"><i class="fa-solid fa-flask"></i> Simulador Interativo Web (JavaScript)</div>
+                    <h3>Teste Prático: Calculadora de Idade em Tempo Real</h3>
+                    <p>Experimente o comportamento do script PHP rodando esta simulação no seu navegador:</p>
+
+                    <div class="simulator-box">
+                        <div class="form-group">
+                            <label for="sim-data-nasc">Escolha sua data de nascimento:</label>
+                            <input type="date" id="sim-data-nasc" class="form-control">
+                        </div>
+                        <button id="btn-calcular-idade" class="btn btn-primary"><i class="fa-solid fa-calculator"></i> Calcular Idade</button>
+                        <div id="out-idade" class="sim-output hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Section 1.6 - Desafio Prático -->
+                <div class="card challenge-card">
+                    <div class="challenge-header">
+                        <i class="fa-solid fa-star"></i>
+                        <h3>Desafio Prático do Estudante: Descubra o Signo do Zodíaco!</h3>
+                    </div>
+                    <p><strong>Objetivo:</strong> Desenvolva um projeto PHP que receba o dia e mês de nascimento e retorne o signo do zodíaco do usuário, acompanhado de uma descrição ou frase do dia.</p>
+                    <p><strong>Metodologia da Prática para a Teoria:</strong> Durante a construção, você praticará os seguintes conceitos fundamentais da sintaxe PHP:</p>
+
+                    <ul class="concepts-list">
+                        <li><code>if / elseif / else</code>: Operadores de controle condicional para testar faixas de datas.</li>
+                        <li><code>&amp;&amp;</code> (E lógico) e <code>||</code> (OU lógico): Para combinar verificação de dia e mês na mesma condição.</li>
+                        <li><code>(int)</code> ou <code>intval()</code>: Conversão de tipos (Typecasting) de string para inteiro.</li>
+                        <li><code>switch</code> ou expressão <code>match</code>: Formas elegantes de selecionar mensagens ou símbolos do signo.</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>desafio_signos.php (Gabarito de Referência)</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+function descobrirSigno($dia, $mes) {
+    if (($mes == 3 &amp;&amp; $dia &gt;= 21) || ($mes == 4 &amp;&amp; $dia &lt;= 19)) return ["Áries", "♈", "Corajoso e entusiasmado."];
+    if (($mes == 4 &amp;&amp; $dia &gt;= 20) || ($mes == 5 &amp;&amp; $dia &lt;= 20)) return ["Touro", "♉", "Paciente e confiável."];
+    if (($mes == 5 &amp;&amp; $dia &gt;= 21) || ($mes == 6 &amp;&amp; $dia &lt;= 20)) return ["Gêmeos", "♊", "Versátil e comunicativo."];
+    if (($mes == 6 &amp;&amp; $dia &gt;= 21) || ($mes == 7 &amp;&amp; $dia &lt;= 22)) return ["Câncer", "♋", "Emotivo e protetor."];
+    if (($mes == 7 &amp;&amp; $dia &gt;= 23) || ($mes == 8 &amp;&amp; $dia &lt;= 22)) return ["Leão", "♌", "Generoso e criativo."];
+    if (($mes == 8 &amp;&amp; $dia &gt;= 23) || ($mes == 9 &amp;&amp; $dia &lt;= 22)) return ["Virgem", "♍", "Meticuloso e prático."];
+    if (($mes == 9 &amp;&amp; $dia &gt;= 23) || ($mes == 10 &amp;&amp; $dia &lt;= 22)) return ["Libras", "♎", "Diplomático e sociável."];
+    if (($mes == 10 &amp;&amp; $dia &gt;= 23) || ($mes == 11 &amp;&amp; $dia &lt;= 21)) return ["Escorpião", "♏", "Apaixonado e determinado."];
+    if (($mes == 11 &amp;&amp; $dia &gt;= 22) || ($mes == 12 &amp;&amp; $dia &lt;= 21)) return ["Sagitário", "♐", "Otimista e aventureiro."];
+    if (($mes == 12 &amp;&amp; $dia &gt;= 22) || ($mes == 1 &amp;&amp; $dia &lt;= 19)) return ["Capricórnio", "♑", "Disciplinado e ambicioso."];
+    if (($mes == 1 &amp;&amp; $dia &gt;= 20) || ($mes == 2 &amp;&amp; $dia &lt;= 18)) return ["Aquário", "♒", "Inovador e independente."];
+    if (($mes == 2 &amp;&amp; $dia &gt;= 19) || ($mes == 3 &amp;&amp; $dia &lt;= 20)) return ["Peixes", "♓", "Compassivo e intuitivo."];
+    return ["Desconhecido", "❓", "Data inválida."];
+}
+
+$signoInfo = null;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $dia = (int)$_POST["dia"];
+    $mes = (int)$_POST["mes"];
+    $signoInfo = descobrirSigno($dia, $mes);
+}
+?&gt;</code></pre>
+                    </div>
+
+                    <!-- Simulator for Zodiac -->
+                    <div class="simulator-box" style="margin-top:20px;">
+                        <h4><i class="fa-solid fa-wand-magic-sparkles"></i> Experimente o Simulador de Signos do Zodíaco:</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sim-dia-signo">Dia do nascimento:</label>
+                                <input type="number" id="sim-dia-signo" min="1" max="31" placeholder="Ex: 15" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="sim-mes-signo">Mês do nascimento:</label>
+                                <select id="sim-mes-signo" class="form-control">
+                                    <option value="1">Janeiro (1)</option>
+                                    <option value="2">Fevereiro (2)</option>
+                                    <option value="3">Março (3)</option>
+                                    <option value="4">Abril (4)</option>
+                                    <option value="5">Maio (5)</option>
+                                    <option value="6">Junho (6)</option>
+                                    <option value="7">Julho (7)</option>
+                                    <option value="8">Agosto (8)</option>
+                                    <option value="9">Setembro (9)</option>
+                                    <option value="10">Outubro (10)</option>
+                                    <option value="11">Novembro (11)</option>
+                                    <option value="12">Dezembro (12)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="btn-descobrir-signo" class="btn btn-accent"><i class="fa-solid fa-star"></i> Descobrir Meu Signo</button>
+                        <div id="out-signo" class="sim-output hidden"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Module 2 -->
+            <section id="module-2" class="module-section hidden">
+                <div class="module-header">
+                    <span class="badge">Módulo 2</span>
+                    <h2>Variáveis Locais vs. Variáveis de Servidor ($_SERVER, $_SESSION, $_COOKIE)</h2>
+                    <p class="description">Compreenda o escopo de variáveis em PHP e aprenda a capturar informações do ambiente e do usuário para criar ferramentas utilitárias úteis e reaproveitáveis.</p>
+                </div>
+
+                <!-- Section 2.1 -->
+                <div class="card">
+                    <h3>2.1 Entendendo Escopo e Tipos de Variáveis</h3>
+                    <p>Em PHP, variáveis locais existem apenas dentro da função/bloco em que foram declaradas. Já as <strong>superglobais</strong> são variáveis pré-definidas pelo PHP acessíveis em qualquer ponto do código.</p>
+
+                    <ul class="concepts-list">
+                        <li><code>$variavelLocal</code>: Declarada dentro de uma função ou arquivo específico.</li>
+                        <li><code>$_SERVER</code>: Armazena cabeçalhos, caminhos, IP e informações do servidor e cliente.</li>
+                        <li><code>$_SESSION</code>: Armazena dados persistentes no servidor enquanto a sessão do usuário durar.</li>
+                        <li><code>$_COOKIE</code>: Guarda informações enviadas pelo servidor no navegador do usuário.</li>
+                    </ul>
+                </div>
+
+                <!-- Section 2.2 - Creative Exercise 1 -->
+                <div class="card">
+                    <h3>2.2 Exercício Útil 1: Inspetor de Acesso do Cliente (Widget de Diagnóstico)</h3>
+                    <p>Crie uma ferramenta reaproveitável que identifica o IP do visitante, sistema operacional/navegador (User-Agent) e idioma preferido. Excelente para ser embutida no rodapé ou painel de qualquer sistema web.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>inspetor_servidor.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+function obterInfoCliente() {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+    $navegador = $_SERVER['HTTP_USER_AGENT'] ?? 'Desconhecido';
+    $protocolo = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
+    $metodo = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+    $idioma = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'pt-BR';
+
+    return [
+        'ip' =&gt; $ip,
+        'user_agent' =&gt; $navegador,
+        'protocolo' =&gt; $protocolo,
+        'metodo' =&gt; $metodo,
+        'idioma' =&gt; $idioma
+    ];
+}
+
+$info = obterInfoCliente();
+?&gt;
+
+&lt;div class="info-card"&gt;
+    &lt;h4&gt; Diagnóstico de Acesso&lt;/h4&gt;
+    &lt;p&gt;&lt;strong&gt;Seu IP:&lt;/strong&gt; &lt;?php echo $info['ip']; ?&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Método de Requisição:&lt;/strong&gt; &lt;?php echo $info['metodo']; ?&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;Seu Navegador:&lt;/strong&gt; &lt;?php echo $info['user_agent']; ?&gt;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 2.3 - Creative Exercise 2 -->
+                <div class="card">
+                    <h3>2.3 Exercício Útil 2: Contador de Visitas com Sessão e Cookies</h3>
+                    <p>Aprenda a controlar quantas vezes o usuário visitou uma página utilizando <code>$_SESSION</code> para a sessão atual e <code>$_COOKIE</code> para guardar a última visita de forma persistente.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>contador_visitas.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+session_start();
+
+// Incrementar contador de páginas acessadas na sessão
+if (!isset($_SESSION['visitas_sessao'])) {
+    $_SESSION['visitas_sessao'] = 1;
+} else {
+    $_SESSION['visitas_sessao']++;
+}
+
+// Gravar cookie da última visita válida por 30 dias
+$dataHoraAtual = date('d/m/Y H:i:s');
+$ultimaVisita = $_COOKIE['ultima_visita'] ?? 'Primeiro acesso!';
+setcookie('ultima_visita', $dataHoraAtual, time() + (86400 * 30), "/");
+?&gt;
+
+&lt;div class="counter-box"&gt;
+    &lt;p&gt;Páginas vistas nesta sessão: &lt;strong&gt;&lt;?php echo $_SESSION['visitas_sessao']; ?&gt;&lt;/strong&gt;&lt;/p&gt;
+    &lt;p&gt;Sua última visita gravada em Cookie foi: &lt;strong&gt;&lt;?php echo $ultimaVisita; ?&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 2.4 - Interactive Simulator for Server Variables -->
+                <div class="card simulator-card">
+                    <div class="simulator-badge"><i class="fa-solid fa-flask"></i> Simulador Interativo Web</div>
+                    <h3>Simulador de Variáveis de Servidor ($_SERVER e Navegador)</h3>
+                    <p>Veja em tempo real os dados obtidos diretamente do seu navegador simulando a leitura das variáveis de ambiente do PHP:</p>
+
+                    <div class="simulator-box">
+                        <button id="btn-carregar-server-info" class="btn btn-primary"><i class="fa-solid fa-server"></i> Inspecionar Dados de Servidor</button>
+                        <div id="out-server-info" class="sim-output hidden"></div>
+                    </div>
+                </div>
+            </section>
+            <!-- Module 3 -->
+            <section id="module-3" class="module-section hidden">
+                <div class="module-header">
+                    <span class="badge">Módulo 3</span>
+                    <h2>Gravação de Dados em Arquivos JSON & Mini CRUD</h2>
+                    <p class="description">Aprenda a persistir dados digitados em formulários HTML salvando-os em arquivos <code>.json</code> e construa um Mini CRUD (Create, Read, Update, Delete) sem utilizar banco de dados SQL.</p>
+                </div>
+
+                <!-- Section 3.1 -->
+                <div class="card">
+                    <h3>3.1 Como Manipular Arquivos JSON com PHP</h3>
+                    <p>O PHP possui funções nativas simples e poderosas para lidar com arquivos e o formato JSON:</p>
+                    <ul class="concepts-list">
+                        <li><code>json_encode($dados, JSON_PRETTY_PRINT)</code>: Converte um Array PHP para uma string formatada em JSON.</li>
+                        <li><code>json_decode($jsonString, true)</code>: Decodifica uma string JSON para um Array associativo PHP.</li>
+                        <li><code>file_get_contents('dados.json')</code>: Lê todo o conteúdo do arquivo.</li>
+                        <li><code>file_put_contents('dados.json', $jsonString)</code>: Salva o conteúdo no arquivo.</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>salvar_contato.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+$arquivo = 'contatos.json';
+
+// Inicializar arquivo se não existir
+if (!file_exists($arquivo)) {
+    file_put_contents($arquivo, json_encode([]));
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Ler os dados existentes no arquivo JSON
+    $conteudoAtual = file_get_contents($arquivo);
+    $contatos = json_decode($conteudoAtual, true) ?? [];
+
+    // Criar novo registro com ID único
+    $novoContato = [
+        'id' =&gt; uniqid(),
+        'nome' =&gt; htmlspecialchars($_POST['nome']),
+        'email' =&gt; htmlspecialchars($_POST['email']),
+        'data_registro' =&gt; date('d/m/Y H:i')
+    ];
+
+    // Adicionar e salvar de volta no arquivo .json
+    $contatos[] = $novoContato;
+    file_put_contents($arquivo, json_encode($contatos, JSON_PRETTY_PRINT));
+    echo "Contato salvo com sucesso!";
+}
+?&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 3.2 - Building a Mini CRUD -->
+                <div class="card">
+                    <h3>3.2 Evoluindo para um Mini CRUD em JSON</h3>
+                    <p>Um CRUD básico necessita de 4 operações principais. Veja como implementar em PHP utilizando o arquivo `.json`:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>mini_crud.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+$arquivo = 'tarefas.json';
+$tarefas = file_exists($arquivo) ? json_decode(file_get_contents($arquivo), true) : [];
+
+// --- C: CREATE (Adicionar) ---
+if (isset($_POST['acao']) &amp;&amp; $_POST['acao'] === 'criar') {
+    $nova = [
+        'id' =&gt; time(),
+        'titulo' =&gt; htmlspecialchars($_POST['titulo']),
+        'concluida' =&gt; false
+    ];
+    $tarefas[] = $nova;
+    file_put_contents($arquivo, json_encode($tarefas, JSON_PRETTY_PRINT));
+}
+
+// --- D: DELETE (Remover) ---
+if (isset($_GET['deletar'])) {
+    $idDeletar = $_GET['deletar'];
+    $tarefas = array_filter($tarefas, fn($t) =&gt; $t['id'] != $idDeletar);
+    file_put_contents($arquivo, json_encode(array_values($tarefas), JSON_PRETTY_PRINT));
+}
+?&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 3.3 - Interactive Simulator -->
+                <div class="card simulator-card">
+                    <div class="simulator-badge"><i class="fa-solid fa-flask"></i> Simulador Interativo Web (CRUD JSON)</div>
+                    <h3>Simulador do Mini CRUD com Persistência Local</h3>
+                    <p>Cadastre tarefas ou contatos no formulário abaixo. Os dados são guardados e renderizados dinamicamente simulando a manipulação do arquivo JSON pelo PHP:</p>
+
+                    <div class="simulator-box">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sim-crud-nome">Nome da Tarefa / Item:</label>
+                                <input type="text" id="sim-crud-nome" class="form-control" placeholder="Ex: Estudar PHP às 14h">
+                            </div>
+                            <div class="form-group">
+                                <label for="sim-crud-categoria">Categoria:</label>
+                                <select id="sim-crud-categoria" class="form-control">
+                                    <option value="Estudo">Estudo</option>
+                                    <option value="Trabalho">Trabalho</option>
+                                    <option value="Pessoal">Pessoal</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="btn-salvar-crud" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Adicionar Registro em JSON</button>
+
+                        <h4 style="margin-top:20px;">Registros Atuais do Arquivo <code>dados.json</code>:</h4>
+                        <div id="out-crud-lista" class="sim-crud-list">
+                            <p class="empty-msg">Nenhum registro encontrado no arquivo JSON.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Module 4 -->
+            <section id="module-4" class="module-section hidden">
+                <div class="module-header">
+                    <span class="badge">Módulo 4</span>
+                    <h2>Login Seguro com Criptografia & Consumo de APIs Públicas</h2>
+                    <p class="description">Construa um sistema de autenticação seguro usando criptografia de senha no JSON e aprenda a conectar sua aplicação PHP com APIs externas como a de Previsão do Tempo.</p>
+                </div>
+
+                <!-- Section 4.1 - Login with Password Hashing -->
+                <div class="card">
+                    <h3>4.1 Tela de Login com Senha Criptografada em JSON</h3>
+                    <p><strong>Atenção:</strong> Nunca salve senhas em texto puro! Em PHP, a função padrão recomendada para criptografar senhas com algoritmo seguro (BCrypt/Argon2) é a <code>password_hash()</code> e para verificar usaremos <code>password_verify()</code>.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>cadastro_e_login.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+session_start();
+$arquivoUsuarios = 'usuarios.json';
+
+// --- CADASTRAR NOVO USUÁRIO ---
+if (isset($_POST['acao']) &amp;&amp; $_POST['acao'] === 'cadastrar') {
+    $usuario = trim($_POST['usuario']);
+    $senhaPura = $_POST['senha'];
+
+    // Gerar HASH seguro da senha
+    $senhaHash = password_hash($senhaPura, PASSWORD_DEFAULT);
+
+    $usuarios = file_exists($arquivoUsuarios) ? json_decode(file_get_contents($arquivoUsuarios), true) : [];
+    $usuarios[$usuario] = [
+        'usuario' =&gt; $usuario,
+        'senha_hash' =&gt; $senhaHash
+    ];
+
+    file_put_contents($arquivoUsuarios, json_encode($usuarios, JSON_PRETTY_PRINT));
+    echo "Usuário cadastrado com sucesso e senha criptografada!";
+}
+
+// --- AUTENTICAR / LOGIN ---
+if (isset($_POST['acao']) &amp;&amp; $_POST['acao'] === 'login') {
+    $usuario = trim($_POST['usuario']);
+    $senhaPura = $_POST['senha'];
+
+    $usuarios = file_exists($arquivoUsuarios) ? json_decode(file_get_contents($arquivoUsuarios), true) : [];
+
+    if (isset($usuarios[$usuario]) &amp;&amp; password_verify($senhaPura, $usuarios[$usuario]['senha_hash'])) {
+        $_SESSION['usuario_logado'] = $usuario;
+        echo "Login bem-sucedido! Bem-vindo, " . htmlspecialchars($usuario);
+    } else {
+        echo "Usuário ou senha inválidos!";
+    }
+}
+?&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 4.2 - Consuming Public Weather API -->
+                <div class="card">
+                    <h3>4.2 Consumindo uma API Pública de Previsão do Tempo em PHP</h3>
+                    <p>Integrar dados externos é uma habilidade fundamental. Usamos <code>file_get_contents()</code> ou a biblioteca <code>cURL</code> do PHP para consumir a API REST gratuita da Open-Meteo para previsão do tempo.</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>clima_api.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+// Coordenadas de São Paulo
+$latitude = -23.55;
+$longitude = -46.63;
+$apiUrl = "https://api.open-meteo.com/v1/forecast?latitude={$latitude}&amp;longitude={$longitude}&amp;current_weather=true";
+
+// Fazer requisição GET para a API REST
+$respostaJson = file_get_contents($apiUrl);
+
+if ($respostaJson !== false) {
+    $dadosClima = json_decode($respostaJson, true);
+    $temperatura = $dadosClima['current_weather']['temperature'];
+    $velocidadeVento = $dadosClima['current_weather']['windspeed'];
+
+    echo "&lt;h4&gt;Previsão do Tempo em São Paulo&lt;/h4&gt;";
+    echo "&lt;p&gt;Temperatura atual: &lt;strong&gt;{$temperatura}°C&lt;/strong&gt;&lt;/p&gt;";
+    echo "&lt;p&gt;Velocidade do vento: {$velocidadeVento} km/h&lt;/p&gt;";
+} else {
+    echo "Erro ao conectar com a API de clima.";
+}
+?&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 4.3 - Suggested APIs -->
+                <div class="card">
+                    <h3>4.3 Sugestões de Outras APIs Públicas para Projetos Estudantis</h3>
+                    <p>Expanda seus projetos praticando com estas APIs gratúitas e sem necessidade de chave complexa:</p>
+
+                    <div class="api-grid">
+                        <div class="api-card">
+                            <i class="fa-solid fa-map-location-dot api-icon"></i>
+                            <h4>ViaCEP API</h4>
+                            <p>Consulta de endereço por CEP (Logradouro, Bairro, Cidade e UF).</p>
+                            <code>https://viacep.com.br/ws/01001000/json/</code>
+                        </div>
+                        <div class="api-card">
+                            <i class="fa-solid fa-dollar-sign api-icon"></i>
+                            <h4>AwesomeAPI Cotações</h4>
+                            <p>Cotação atualizada em tempo real de moedas (Dólar, Euro, Bitcoin).</p>
+                            <code>https://economia.awesomeapi.com.br/last/USD-BRL</code>
+                        </div>
+                        <div class="api-card">
+                            <i class="fa-solid fa-paw api-icon"></i>
+                            <h4>Dog API / Cat API</h4>
+                            <p>Retorna imagens e curiosidades aleatórias sobre animais.</p>
+                            <code>https://dog.ceo/api/breeds/image/random</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4.4 - Interactive Weather Simulator -->
+                <div class="card simulator-card">
+                    <div class="simulator-badge"><i class="fa-solid fa-flask"></i> Simulador Interativo Web (API Clima)</div>
+                    <h3>Simulador da API de Previsão do Tempo</h3>
+                    <p>Selecione uma cidade para realizar uma requisição ao vivo para a API pública de clima Open-Meteo:</p>
+
+                    <div class="simulator-box">
+                        <div class="form-group">
+                            <label for="sim-cidade-select">Escolha a cidade:</label>
+                            <select id="sim-cidade-select" class="form-control">
+                                <option value="-23.55,-46.63">São Paulo (Brasil)</option>
+                                <option value="-22.90,-43.17">Rio de Janeiro (Brasil)</option>
+                                <option value="-15.78,-47.92">Brasília (Brasil)</option>
+                                <option value="38.72,-9.13">Lisboa (Portugal)</option>
+                                <option value="40.71,-74.00">Nova York (EUA)</option>
+                                <option value="35.68,139.69">Tóquio (Japão)</option>
+                            </select>
+                        </div>
+                        <button id="btn-consultar-clima" class="btn btn-primary"><i class="fa-solid fa-cloud-sun"></i> Consultar Previsão do Tempo</button>
+                        <div id="out-clima-info" class="sim-output hidden"></div>
+                    </div>
+                </div>
+            </section>
+            <!-- Module 5 -->
+            <section id="module-5" class="module-section hidden">
+                <div class="module-header">
+                    <span class="badge">Módulo 5</span>
+                    <h2>Projeto Integrador Final: Sistema CRUD Completo com JSON</h2>
+                    <p class="description">Consolide todo o conhecimento do curso desenvolvendo um sistema completo com autenticação, listagem, cadastro, edição e exclusão de registros utilizando unicamente arquivos <code>.json</code> e PHP.</p>
+                </div>
+
+                <!-- Section 5.1 - Final Project Specifications -->
+                <div class="card">
+                    <h3>5.1 Especificações do Projeto Final</h3>
+                    <p>O aluno deverá construir um sistema completo (ex: Sistema de Gerenciamento de Alunos, Tarefas ou Produtos) respeitando a seguinte arquitetura:</p>
+
+                    <ul class="concepts-list">
+                        <li><code>index.php</code>: Tela de login e redirecionamento.</li>
+                        <li><code>dashboard.php</code>: Painel principal com exibição dos dados lidos do arquivo JSON.</li>
+                        <li><code>salvar.php</code>: Lógica para Create (Criar) e Update (Editar) registros.</li>
+                        <li><code>deletar.php</code>: Lógica para Delete (Remover) registros.</li>
+                        <li><code>banco.json</code>: Arquivo JSON de armazenamento de registros.</li>
+                        <li><code>usuarios.json</code>: Arquivo JSON de usuários cadastrados com senha hash.</li>
+                    </ul>
+                </div>
+
+                <!-- Section 5.2 - Structure and Complete Code Example -->
+                <div class="card">
+                    <h3>5.2 Estrutura e Código do Projeto Final Integrador</h3>
+                    <p>Abaixo está o modelo de código completo para a lógica de controle CRUD (Create, Read, Update, Delete) em JSON do projeto final:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>sistema_crud_final.php</span>
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                        <pre><code>&lt;?php
+session_start();
+
+// Proteção de Acesso: Apenas usuários logados
+if (!isset($_SESSION['usuario_logado'])) {
+    header("Location: index.php");
+    exit();
+}
+
+$arquivoDados = 'banco.json';
+
+function carregarDados($arquivo) {
+    if (!file_exists($arquivo)) return [];
+    $conteudo = file_get_contents($arquivo);
+    return json_decode($conteudo, true) ?? [];
+}
+
+function salvarDados($arquivo, $dados) {
+    file_put_contents($arquivo, json_encode(array_values($dados), JSON_PRETTY_PRINT));
+}
+
+$registros = carregarDados($arquivoDados);
+
+// --- CREATE & UPDATE ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id'] ?? null;
+    $titulo = htmlspecialchars($_POST['titulo']);
+    $descricao = htmlspecialchars($_POST['descricao']);
+
+    if ($id) {
+        // Atualizar existente (UPDATE)
+        foreach ($registros as &amp;$item) {
+            if ($item['id'] == $id) {
+                $item['titulo'] = $titulo;
+                $item['descricao'] = $descricao;
+                $item['atualizado_em'] = date('d/m/Y H:i');
+                break;
+            }
+        }
+    } else {
+        // Criar novo registro (CREATE)
+        $novo = [
+            'id' =&gt; uniqid(),
+            'titulo' =&gt; $titulo,
+            'descricao' =&gt; $descricao,
+            'criado_em' =&gt; date('d/m/Y H:i')
+        ];
+        $registros[] = $novo;
+    }
+
+    salvarDados($arquivoDados, $registros);
+    header("Location: dashboard.php");
+    exit();
+}
+
+// --- DELETE ---
+if (isset($_GET['acao']) &amp;&amp; $_GET['acao'] === 'deletar') {
+    $idDeletar = $_GET['id'];
+    $registros = array_filter($registros, fn($r) =&gt; $r['id'] !== $idDeletar);
+    salvarDados($arquivoDados, $registros);
+    header("Location: dashboard.php");
+    exit();
+}
+?&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Section 5.3 - Final Checklist -->
+                <div class="card challenge-card">
+                    <div class="challenge-header">
+                        <i class="fa-solid fa-trophy"></i>
+                        <h3>Checklist da Entrega do Projeto pelos Alunos</h3>
+                    </div>
+                    <ul class="concepts-list">
+                        <li><i class="fa-solid fa-check text-success"></i> O formulário faz validação de campos obrigatórios?</li>
+                        <li><i class="fa-solid fa-check text-success"></i> As senhas cadastradas em <code>usuarios.json</code> usam <code>password_hash()</code>?</li>
+                        <li><i class="fa-solid fa-check text-success"></i> Os dados gravados no JSON são sanitizados contra inclusão de scripts com <code>htmlspecialchars()</code>?</li>
+                        <li><i class="fa-solid fa-check text-success"></i> O sistema permite Adicionar, Listar, Editar e Deletar registros sem erros?</li>
+                        <li><i class="fa-solid fa-check text-success"></i> A interface web é limpa e responsiva?</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
