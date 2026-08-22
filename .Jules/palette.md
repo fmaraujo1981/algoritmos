@@ -1,0 +1,3 @@
+## 2026-08-22 - Screen Reader Live Announcements and Accessible Dynamic Controls
+**Learning:** Dynamic DOM updates rendered by JS simulators (such as calculators, API fetch responses, and CRUD list updates) are invisible to screen readers unless the output container has `aria-live="polite"`. In addition, dynamically generated action buttons in JS templates must include explicit `aria-label` descriptors referencing item details (e.g. item title) for clarity.
+**Action:** Always include `aria-live="polite"` on output response divs and pass context-aware `aria-label` attributes when dynamically rendering icon-only buttons in templates.
