@@ -358,6 +358,96 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// AI Tutor Widget Logic & Gemini API Integration
+document.addEventListener('DOMContentLoaded', () => {
+    const aiToggleBtn = document.getElementById('ai-tutor-toggle-btn');
+    const aiCloseBtn = document.getElementById('ai-tutor-close-btn');
+    const aiBox = document.getElementById('ai-tutor-box');
+    const aiUserInput = document.getElementById('ai-user-input');
+    const aiSendBtn = document.getElementById('ai-send-btn');
+    const aiChatMessages = document.getElementById('ai-chat-messages');
+
+    if (aiToggleBtn && aiBox) {
+        aiToggleBtn.addEventListener('click', () => {
+            aiBox.classList.toggle('hidden');
+        });
+
+        aiCloseBtn.addEventListener('click', () => {
+            aiBox.classList.add('hidden');
+        });
+
+        async function handleAiChat() {
+            const query = aiUserInput.value.trim();
+            if (!query) return;
+
+            // Append user message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'ai-msg user';
+            userMsgDiv.innerText = query;
+            aiChatMessages.appendChild(userMsgDiv);
+
+            aiUserInput.value = '';
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+
+            // Append loading bot message
+            const botLoadingDiv = document.createElement('div');
+            botLoadingDiv.className = 'ai-msg bot';
+            botLoadingDiv.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Pensando na melhor explicação de PHP...';
+            aiChatMessages.appendChild(botLoadingDiv);
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+
+            try {
+                let apiKey = localStorage.getItem('gemini_api_key');
+                if (!apiKey) {
+                    apiKey = prompt('Insira sua Chave de API do Gemini (API Key) para conversar com o Tutor IA:') || '';
+                    if (apiKey) localStorage.setItem('gemini_api_key', apiKey);
+                }
+
+                if (!apiKey) {
+                    botLoadingDiv.innerText = "Chave de API do Gemini não fornecida. Adicione sua chave para utilizar o Tutor IA.";
+                    return;
+                }
+
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent`;
+
+                const promptText = `Você é um tutor didático e encorajador de PHP para estudantes iniciantes. Responda de forma clara, objetiva e amigável em português do Brasil à seguinte dúvida do aluno: "${query}". Mantenha a resposta concisa (máximo 3 parágrafos ou com exemplos de código curtos).`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-goog-api-key': apiKey
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: promptText }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                    const reply = data.candidates[0].content.parts[0].text;
+                    botLoadingDiv.innerText = reply;
+                } else {
+                    botLoadingDiv.innerText = "Desculpe, não consegui obter a resposta no momento. Tente novamente em instantes!";
+                }
+            } catch (err) {
+                console.error(err);
+                botLoadingDiv.innerText = "Ocorreu um erro ao conectar com o Tutor de IA. Verifique sua conexão.";
+            }
+
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+        }
+
+        aiSendBtn.addEventListener('click', handleAiChat);
+        aiUserInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleAiChat();
+        });
+    }
+});
+
 // Code Copy Function
 function copyCode(button) {
     const codeBlock = button.closest('.code-block').querySelector('code');

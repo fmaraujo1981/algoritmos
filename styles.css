@@ -288,6 +288,128 @@ body {
     background: #047857;
 }
 
+/* AI Tutor Widget Styling */
+.ai-tutor-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+}
+
+.ai-tutor-toggle-btn {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.ai-tutor-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(99, 102, 241, 0.5);
+}
+
+.ai-tutor-box {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    width: 360px;
+    height: 480px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-tutor-box.hidden {
+    display: none;
+}
+
+.ai-tutor-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #311b92 100%);
+    color: white;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ai-tutor-header h4 {
+    flex-grow: 1;
+    font-size: 1rem;
+}
+
+.ai-close-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.ai-chat-messages {
+    flex-grow: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: var(--bg-primary);
+}
+
+.ai-msg {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    max-width: 85%;
+    word-break: break-word;
+}
+
+.ai-msg.bot {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-left: 3px solid var(--accent);
+    align-self: flex-start;
+}
+
+.ai-msg.user {
+    background-color: var(--accent);
+    color: white;
+    align-self: flex-end;
+}
+
+.ai-chat-input-area {
+    padding: 12px;
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 8px;
+}
+
+.ai-chat-input-area input {
+    flex-grow: 1;
+    font-size: 0.85rem;
+}
+
 /* Toast Notifications for Achievements */
 .toast-achievement {
     position: fixed;

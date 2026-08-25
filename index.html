@@ -875,6 +875,31 @@ if (isset($_GET['acao']) &amp;&amp; $_GET['acao'] === 'deletar') {
             </section>
         </main>
     </div>
+
+    <!-- AI Tutor Widget -->
+    <div id="ai-tutor-widget" class="ai-tutor-widget">
+        <button id="ai-tutor-toggle-btn" class="ai-tutor-toggle-btn">
+            <i class="fa-solid fa-robot"></i> <span>Tutor IA PHP</span>
+        </button>
+
+        <div id="ai-tutor-box" class="ai-tutor-box hidden">
+            <div class="ai-tutor-header">
+                <i class="fa-solid fa-robot"></i>
+                <h4>Tutor Inteligente de PHP</h4>
+                <button id="ai-tutor-close-btn" class="ai-close-btn">&times;</button>
+            </div>
+            <div id="ai-chat-messages" class="ai-chat-messages">
+                <div class="ai-msg bot">
+                    Olá! Sou seu assistente de Inteligência Artificial para o curso de PHP. Tem alguma dúvida sobre a sintaxe, quer uma dica para os exercícios ou ajuda no Desafio do Zodíaco? Pergunte-me!
+                </div>
+            </div>
+            <div class="ai-chat-input-area">
+                <input type="text" id="ai-user-input" class="form-control" placeholder="Tire sua dúvida de PHP...">
+                <button id="ai-send-btn" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
