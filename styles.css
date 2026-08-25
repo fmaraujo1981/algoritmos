@@ -673,6 +673,10 @@ pre code {
     border-left: 4px solid var(--accent);
 }
 
+.hidden {
+    display: none !important;
+}
+
 .sim-output.hidden {
     display: none;
 }
