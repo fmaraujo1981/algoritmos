@@ -358,6 +358,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Helper function to query Gemini API (with fallback models)
+async function sendGeminiRequest(apiKey, promptText) {
+    const modelsToTry = [
+        'gemini-3.6-flash',
+        'gemini-1.5-flash',
+        'gemini-2.0-flash',
+        'gemini-flash-latest'
+    ];
+
+    let lastErrorMessage = '';
+
+    for (const model of modelsToTry) {
+        try {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: promptText }]
+                    }]
+                })
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.candidates && data.candidates[0] && data.candidates[0].content) {
+                const text = data.candidates[0].content.parts[0].text;
+                return { success: true, text: text, model: model };
+            } else if (data.error) {
+                lastErrorMessage = data.error.message || `Erro ${data.error.code}`;
+            }
+        } catch (err) {
+            lastErrorMessage = err.message || 'Erro de rede ou conexão';
+        }
+    }
+
+    return { success: false, error: lastErrorMessage };
+}
+
 // AI Tutor Widget Logic & Gemini API Integration
 document.addEventListener('DOMContentLoaded', () => {
     const aiToggleBtn = document.getElementById('ai-tutor-toggle-btn');
@@ -406,30 +448,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Record question in student experience reports
                 recordAiInteraction(query);
 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent`;
+                const response = await sendGeminiRequest(apiKey, `Você é um tutor didático e encorajador de PHP para estudantes iniciantes. Responda de forma clara, objetiva e amigável em português do Brasil à seguinte dúvida do aluno: "${query}". Mantenha a resposta concisa (máximo 3 parágrafos ou com exemplos de código curtos).`);
 
-                const promptText = `Você é um tutor didático e encorajador de PHP para estudantes iniciantes. Responda de forma clara, objetiva e amigável em português do Brasil à seguinte dúvida do aluno: "${query}". Mantenha a resposta concisa (máximo 3 parágrafos ou com exemplos de código curtos).`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-goog-api-key': apiKey
-                    },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: promptText }]
-                        }]
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-                    const reply = data.candidates[0].content.parts[0].text;
-                    botLoadingDiv.innerText = reply;
+                if (response.success) {
+                    botLoadingDiv.innerText = response.text;
                 } else {
-                    botLoadingDiv.innerText = "Desculpe, não consegui obter a resposta no momento. Tente novamente em instantes!";
+                    botLoadingDiv.innerText = `Desculpe, não consegui obter a resposta no momento (${response.error || 'Erro na API'}). Por favor, verifique a chave de API no Painel Admin.`;
                 }
             } catch (err) {
                 console.error(err);
@@ -526,21 +550,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Save Gemini API Key
+    // Save and Test Gemini API Key
+    const btnTestApiKey = document.getElementById('btn-test-api-key');
+
     if (btnSaveApiKey) {
-        btnSaveApiKey.addEventListener('click', () => {
+        btnSaveApiKey.addEventListener('click', async () => {
             const newKey = adminApiKeyInput.value.trim();
             if (!newKey) {
                 adminApiKeyMsg.classList.remove('hidden');
-                adminApiKeyMsg.innerHTML = '<span style="color:#ef4444;">Insira uma chave válida.</span>';
+                adminApiKeyMsg.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Insira uma chave válida.</span>';
                 return;
             }
-            localStorage.setItem('gemini_api_key', newKey);
-            adminApiKeyMsg.classList.remove('hidden');
-            adminApiKeyMsg.innerHTML = '<span style="color:#10b981;"><i class="fa-solid fa-check"></i> Chave de API salva com sucesso no sistema!</span>';
-            setTimeout(() => adminApiKeyMsg.classList.add('hidden'), 3000);
-        });
 
+            adminApiKeyMsg.classList.remove('hidden');
+            adminApiKeyMsg.innerHTML = '<span style="color:var(--accent);"><i class="fa-solid fa-spinner fa-spin"></i> Salvando e testando conexão com a API do Gemini...</span>';
+
+            const testResult = await sendGeminiRequest(newKey, "Teste de conexão da API do PHP Course.");
+
+            if (testResult.success) {
+                localStorage.setItem('gemini_api_key', newKey);
+                adminApiKeyMsg.innerHTML = `<span style="color:#10b981;"><i class="fa-solid fa-circle-check"></i> Conexão estabelecida com sucesso usando o modelo <strong>${testResult.model}</strong>! Chave de API salva no sistema.</span>`;
+            } else {
+                adminApiKeyMsg.innerHTML = `<span style="color:#ef4444;"><i class="fa-solid fa-circle-xmark"></i> Falha ao conectar: ${testResult.error || 'Verifique se a chave está correta'}.</span>`;
+            }
+        });
+    }
+
+    if (btnTestApiKey) {
+        btnTestApiKey.addEventListener('click', async () => {
+            const keyToTest = adminApiKeyInput.value.trim() || localStorage.getItem('gemini_api_key');
+            if (!keyToTest) {
+                adminApiKeyMsg.classList.remove('hidden');
+                adminApiKeyMsg.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Nenhuma chave informada para teste.</span>';
+                return;
+            }
+
+            adminApiKeyMsg.classList.remove('hidden');
+            adminApiKeyMsg.innerHTML = '<span style="color:var(--accent);"><i class="fa-solid fa-spinner fa-spin"></i> Testando conexão com a API Google Gemini...</span>';
+
+            const testResult = await sendGeminiRequest(keyToTest, "Teste rápido de conexão.");
+
+            if (testResult.success) {
+                adminApiKeyMsg.innerHTML = `<span style="color:#10b981;"><i class="fa-solid fa-circle-check"></i> Teste de conexão bem-sucedido! Modelo ativo: <strong>${testResult.model}</strong>. Resposta da IA: "${testResult.text.substring(0, 50)}..."</span>`;
+            } else {
+                adminApiKeyMsg.innerHTML = `<span style="color:#ef4444;"><i class="fa-solid fa-circle-xmark"></i> Erro de conexão com a API: ${testResult.error}. Verifique a permissão e validade da sua API Key.</span>`;
+            }
+        });
+    }
+
+    if (btnToggleShowKey) {
         btnToggleShowKey.addEventListener('click', () => {
             if (adminApiKeyInput.type === 'password') {
                 adminApiKeyInput.type = 'text';
