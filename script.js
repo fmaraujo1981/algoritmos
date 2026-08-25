@@ -399,14 +399,12 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 let apiKey = localStorage.getItem('gemini_api_key');
                 if (!apiKey) {
-                    apiKey = prompt('Insira sua Chave de API do Gemini (API Key) para conversar com o Tutor IA:') || '';
-                    if (apiKey) localStorage.setItem('gemini_api_key', apiKey);
-                }
-
-                if (!apiKey) {
-                    botLoadingDiv.innerText = "Chave de API do Gemini não fornecida. Adicione sua chave para utilizar o Tutor IA.";
+                    botLoadingDiv.innerText = "Chave de API do Gemini não configurada pelo Administrador. Peça ao professor para salvar a API Key no Painel Admin!";
                     return;
                 }
+
+                // Record question in student experience reports
+                recordAiInteraction(query);
 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent`;
 
@@ -445,6 +443,162 @@ document.addEventListener('DOMContentLoaded', () => {
         aiUserInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleAiChat();
         });
+    }
+});
+
+// Analytics & Student Experience Tracking Engine
+let analyticsData = {
+    aiQueriesCount: 0,
+    aiHistory: []
+};
+
+function loadAnalyticsData() {
+    const saved = localStorage.getItem('php_course_analytics');
+    if (saved) {
+        try {
+            analyticsData = { ...analyticsData, ...JSON.parse(saved) };
+        } catch (e) {
+            console.error('Erro ao carregar relatórios:', e);
+        }
+    }
+}
+
+function saveAnalyticsData() {
+    localStorage.setItem('php_course_analytics', JSON.stringify(analyticsData));
+}
+
+function recordAiInteraction(questionText) {
+    loadAnalyticsData();
+    analyticsData.aiQueriesCount++;
+    analyticsData.aiHistory.unshift({
+        data: new Date().toLocaleString('pt-BR'),
+        pergunta: questionText
+    });
+    if (analyticsData.aiHistory.length > 50) analyticsData.aiHistory.pop();
+    saveAnalyticsData();
+}
+
+// Admin Panel Login, API Key Management & Student Reports
+document.addEventListener('DOMContentLoaded', () => {
+
+    const adminLoginBtn = document.getElementById('btn-admin-login');
+    const adminUserInput = document.getElementById('admin-user-input');
+    const adminPassInput = document.getElementById('admin-pass-input');
+    const adminLoginMsg = document.getElementById('admin-login-msg');
+    const adminLoginCard = document.getElementById('admin-login-card');
+    const adminDashboardView = document.getElementById('admin-dashboard-view');
+    const adminLogoutBtn = document.getElementById('btn-admin-logout');
+
+    const adminApiKeyInput = document.getElementById('admin-api-key-input');
+    const btnSaveApiKey = document.getElementById('btn-save-api-key');
+    const btnToggleShowKey = document.getElementById('btn-toggle-show-key');
+    const adminApiKeyMsg = document.getElementById('admin-api-key-msg');
+
+    // Admin Auth Logic (admin / PHP2026)
+    if (adminLoginBtn) {
+        adminLoginBtn.addEventListener('click', () => {
+            const user = adminUserInput.value.trim();
+            const pass = adminPassInput.value.trim();
+
+            if (user === 'admin' && pass === 'PHP2026') {
+                adminLoginMsg.classList.remove('hidden');
+                adminLoginMsg.innerHTML = '<span style="color:#10b981;"><i class="fa-solid fa-circle-check"></i> Autenticado com sucesso! Carregando painel...</span>';
+
+                setTimeout(() => {
+                    adminLoginCard.classList.add('hidden');
+                    adminDashboardView.classList.remove('hidden');
+                    loadAdminDashboard();
+                }, 800);
+            } else {
+                adminLoginMsg.classList.remove('hidden');
+                adminLoginMsg.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-circle-xmark"></i> Usuário ou senha incorretos! (Dica: admin / PHP2026)</span>';
+            }
+        });
+    }
+
+    if (adminLogoutBtn) {
+        adminLogoutBtn.addEventListener('click', () => {
+            adminDashboardView.classList.add('hidden');
+            adminLoginCard.classList.remove('hidden');
+            adminUserInput.value = '';
+            adminPassInput.value = '';
+            adminLoginMsg.classList.add('hidden');
+        });
+    }
+
+    // Save Gemini API Key
+    if (btnSaveApiKey) {
+        btnSaveApiKey.addEventListener('click', () => {
+            const newKey = adminApiKeyInput.value.trim();
+            if (!newKey) {
+                adminApiKeyMsg.classList.remove('hidden');
+                adminApiKeyMsg.innerHTML = '<span style="color:#ef4444;">Insira uma chave válida.</span>';
+                return;
+            }
+            localStorage.setItem('gemini_api_key', newKey);
+            adminApiKeyMsg.classList.remove('hidden');
+            adminApiKeyMsg.innerHTML = '<span style="color:#10b981;"><i class="fa-solid fa-check"></i> Chave de API salva com sucesso no sistema!</span>';
+            setTimeout(() => adminApiKeyMsg.classList.add('hidden'), 3000);
+        });
+
+        btnToggleShowKey.addEventListener('click', () => {
+            if (adminApiKeyInput.type === 'password') {
+                adminApiKeyInput.type = 'text';
+            } else {
+                adminApiKeyInput.type = 'password';
+            }
+        });
+    }
+
+    // Render Admin Reports
+    function loadAdminDashboard() {
+        // Load API Key into input field
+        const key = localStorage.getItem('gemini_api_key') || '';
+        adminApiKeyInput.value = key;
+
+        // Load Student Progress Stats
+        loadAnalyticsData();
+        loadGamificationState();
+
+        const reportTotalXp = document.getElementById('report-total-xp');
+        const reportAiQueries = document.getElementById('report-ai-queries');
+        const badgesReportList = document.getElementById('admin-badges-report-list');
+        const aiHistoryList = document.getElementById('admin-ai-history-list');
+
+        if (reportTotalXp) reportTotalXp.innerText = `${gameState.xp} XP`;
+        if (reportAiQueries) reportAiQueries.innerText = analyticsData.aiQueriesCount;
+
+        // Render Badges status
+        if (badgesReportList) {
+            const badgeNames = {
+                m1: 'Mestre da Sintaxe (Módulo 1)',
+                m2: 'Explorador do Servidor (Módulo 2)',
+                m3: 'Guardião do JSON (Módulo 3)',
+                m4: 'Agente das APIs (Módulo 4)',
+                m5: 'Arquiteto Full-Stack (Módulo 5)'
+            };
+
+            badgesReportList.innerHTML = Object.keys(gameState.badges).map(key => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-bottom:1px solid var(--border-color);">
+                    <span>${badgeNames[key]}</span>
+                    <span>${gameState.badges[key] ? '<strong style="color:#10b981;"><i class="fa-solid fa-check-circle"></i> Desbloqueada</strong>' : '<span style="color:var(--text-secondary);"><i class="fa-solid fa-lock"></i> Pendente</span>'}</span>
+                </div>
+            `).join('');
+        }
+
+        // Render AI History
+        if (aiHistoryList) {
+            if (!analyticsData.aiHistory || analyticsData.aiHistory.length === 0) {
+                aiHistoryList.innerHTML = '<p class="empty-msg">Nenhuma pergunta registrada no momento.</p>';
+            } else {
+                aiHistoryList.innerHTML = analyticsData.aiHistory.map(item => `
+                    <div class="crud-item" style="flex-direction:column; align-items:flex-start;">
+                        <small style="color:var(--accent);">${item.data}</small>
+                        <p style="margin:4px 0 0 0; font-size:0.9rem;">"${item.pergunta}"</p>
+                    </div>
+                `).join('');
+            }
+        }
     }
 });
 

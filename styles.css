@@ -410,6 +410,18 @@ body {
     font-size: 0.85rem;
 }
 
+/* Admin Navigation Button */
+.nav-btn.admin-nav-btn {
+    margin-top: 15px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 12px;
+}
+
+.nav-btn.admin-nav-btn .step-num {
+    background: rgba(168, 85, 247, 0.2);
+    color: var(--accent);
+}
+
 /* Toast Notifications for Achievements */
 .toast-achievement {
     position: fixed;

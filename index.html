@@ -36,6 +36,10 @@
                     <span class="step-num">05</span>
                     <span class="nav-title">Projeto Integrador</span>
                 </button>
+                <button class="nav-btn admin-nav-btn" data-target="module-admin">
+                    <span class="step-num"><i class="fa-solid fa-lock"></i></span>
+                    <span class="nav-title">Área do Admin</span>
+                </button>
             </nav>
             <div class="sidebar-footer">
                 <button id="theme-toggle-btn" class="theme-toggle">
@@ -870,6 +874,91 @@ if (isset($_GET['acao']) &amp;&amp; $_GET['acao'] === 'deletar') {
                     <!-- Mission Reward Action -->
                     <div class="mission-claim-box" style="margin-top:20px;">
                         <button class="btn btn-claim" onclick="claimBadge('m5', 'Arquiteto Full-Stack', 100)"><i class="fa-solid fa-crown"></i> Concluir Projeto Final & Resgatar Badge Suprema "+100 XP"</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Module Section -->
+            <section id="module-admin" class="module-section hidden">
+                <div class="module-header">
+                    <span class="badge" style="background:var(--accent); color:#fff;">Área Restrita</span>
+                    <h2>Painel Administrativo & Relatórios do Curso</h2>
+                    <p class="description">Gestão de Chave de API da Inteligência Artificial e visualização do relatório de experiência dos alunos.</p>
+                </div>
+
+                <!-- Admin Auth Card (Shown when logged out) -->
+                <div id="admin-login-card" class="card">
+                    <h3><i class="fa-solid fa-user-shield"></i> Autenticação Administrativa</h3>
+                    <p>Insira as credenciais do administrador para acessar as configurações de API e os relatórios dos estudantes.</p>
+
+                    <div class="simulator-box" style="max-width:400px; margin-top:15px;">
+                        <div class="form-group">
+                            <label for="admin-user-input">Usuário Admin:</label>
+                            <input type="text" id="admin-user-input" class="form-control" placeholder="admin">
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-pass-input">Senha:</label>
+                            <input type="password" id="admin-pass-input" class="form-control" placeholder="••••••••">
+                        </div>
+                        <button id="btn-admin-login" class="btn btn-primary" style="width:100%;"><i class="fa-solid fa-right-to-bracket"></i> Entrar no Painel Admin</button>
+                        <div id="admin-login-msg" class="sim-output hidden" style="margin-top:10px;"></div>
+                    </div>
+                </div>
+
+                <!-- Admin Dashboard View (Shown when logged in) -->
+                <div id="admin-dashboard-view" class="hidden">
+                    <!-- Config Box: API Key -->
+                    <div class="card" style="border-left: 4px solid var(--accent);">
+                        <h3><i class="fa-solid fa-key"></i> Configuração da Chave de API (Gemini / IA)</h3>
+                        <p>Armazene aqui a sua chave da API do Google Gemini para habilitar o Tutor Inteligente de PHP para todos os alunos navegando no curso.</p>
+
+                        <div class="form-group" style="max-width:600px; margin-top:15px;">
+                            <label for="admin-api-key-input">Chave de API do Gemini (API Key):</label>
+                            <input type="password" id="admin-api-key-input" class="form-control" placeholder="Cole sua API Key aqui (ex: AIzaSy...)">
+                        </div>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <button id="btn-save-api-key" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Salvar Chave no Servidor/Storage</button>
+                            <button id="btn-toggle-show-key" class="btn btn-accent" style="padding:8px 12px;"><i class="fa-solid fa-eye"></i> Exibir/Ocultar</button>
+                        </div>
+                        <div id="admin-api-key-msg" class="sim-output hidden" style="margin-top:10px;"></div>
+                    </div>
+
+                    <!-- Student Experience Analytics Report -->
+                    <div class="card">
+                        <h3><i class="fa-solid fa-chart-line"></i> Relatório de Experiência e Progresso dos Alunos</h3>
+                        <p>Dados coletados sobre o engajamento dos estudantes para apoiar melhorias contínuas no curso:</p>
+
+                        <div class="api-grid" style="margin-top:20px;">
+                            <div class="api-card">
+                                <h4><i class="fa-solid fa-users"></i> Alunos Ativos</h4>
+                                <p style="font-size:2rem; font-weight:bold; color:var(--accent);" id="report-total-students">1</p>
+                                <small>Sessões ativas registradas</small>
+                            </div>
+                            <div class="api-card">
+                                <h4><i class="fa-solid fa-trophy"></i> XP Total Gerado</h4>
+                                <p style="font-size:2rem; font-weight:bold; color:#10b981;" id="report-total-xp">0 XP</p>
+                                <small>Pontuação acumulada em conquistas</small>
+                            </div>
+                            <div class="api-card">
+                                <h4><i class="fa-solid fa-robot"></i> Dúvidas no Tutor IA</h4>
+                                <p style="font-size:2rem; font-weight:bold; color:#3b82f6;" id="report-ai-queries">0</p>
+                                <small>Perguntas enviadas ao assistente</small>
+                            </div>
+                        </div>
+
+                        <h4 style="margin-top:25px;"><i class="fa-solid fa-list-check"></i> Detalhamento de Conquistas Desbloqueadas</h4>
+                        <div id="admin-badges-report-list" style="margin-top:10px;">
+                            <!-- Inserted dynamically -->
+                        </div>
+
+                        <h4 style="margin-top:25px;"><i class="fa-solid fa-comments"></i> Histórico de Interações com o Tutor IA</h4>
+                        <div id="admin-ai-history-list" class="sim-crud-list" style="margin-top:10px; max-height:250px; overflow-y:auto;">
+                            <p class="empty-msg">Nenhuma pergunta registrada no momento.</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align:right; margin-top:15px;">
+                        <button id="btn-admin-logout" class="btn" style="background:#ef4444; color:#fff;"><i class="fa-solid fa-right-from-bracket"></i> Sair do Painel Admin</button>
                     </div>
                 </div>
             </section>
