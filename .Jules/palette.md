@@ -1,0 +1,3 @@
+## 2026-08-26 - Dynamic Outputs and Focus Indicators in Single Page Simulators
+**Learning:** Vanilla JS interactive simulators that dynamically reveal or inject results require explicit `aria-live="polite"` regions so screen reader users are notified when output content updates. Additionally, icon-only action buttons (such as delete actions in dynamic lists) require explicit `aria-label` attributes and decorative icon hiding (`aria-hidden="true"`).
+**Action:** Always verify dynamic JS containers have live region attributes and ensure all interactive elements receive custom `:focus-visible` styling for optimal keyboard navigation.
