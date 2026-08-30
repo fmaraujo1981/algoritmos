@@ -207,7 +207,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; !empty($_POST["data_nascimen
                             <input type="date" id="sim-data-nasc" class="form-control">
                         </div>
                         <button id="btn-calcular-idade" class="btn btn-primary"><i class="fa-solid fa-calculator"></i> Calcular Idade</button>
-                        <div id="out-idade" class="sim-output hidden"></div>
+                        <div id="out-idade" class="sim-output hidden" aria-live="polite"></div>
                     </div>
                 </div>
 
@@ -285,7 +285,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                         </div>
                         <button id="btn-descobrir-signo" class="btn btn-accent"><i class="fa-solid fa-star"></i> Descobrir Meu Signo</button>
-                        <div id="out-signo" class="sim-output hidden"></div>
+                        <div id="out-signo" class="sim-output hidden" aria-live="polite"></div>
                     </div>
                 </div>
             </section>
@@ -391,7 +391,7 @@ setcookie('ultima_visita', $dataHoraAtual, time() + (86400 * 30), "/");
 
                     <div class="simulator-box">
                         <button id="btn-carregar-server-info" class="btn btn-primary"><i class="fa-solid fa-server"></i> Inspecionar Dados de Servidor</button>
-                        <div id="out-server-info" class="sim-output hidden"></div>
+                        <div id="out-server-info" class="sim-output hidden" aria-live="polite"></div>
                     </div>
                 </div>
             </section>
@@ -508,7 +508,7 @@ if (isset($_GET['deletar'])) {
                         <button id="btn-salvar-crud" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Adicionar Registro em JSON</button>
 
                         <h4 style="margin-top:20px;">Registros Atuais do Arquivo <code>dados.json</code>:</h4>
-                        <div id="out-crud-lista" class="sim-crud-list">
+                        <div id="out-crud-lista" class="sim-crud-list" aria-live="polite">
                             <p class="empty-msg">Nenhum registro encontrado no arquivo JSON.</p>
                         </div>
                     </div>
@@ -652,7 +652,7 @@ if ($respostaJson !== false) {
                             </select>
                         </div>
                         <button id="btn-consultar-clima" class="btn btn-primary"><i class="fa-solid fa-cloud-sun"></i> Consultar Previsão do Tempo</button>
-                        <div id="out-clima-info" class="sim-output hidden"></div>
+                        <div id="out-clima-info" class="sim-output hidden" aria-live="polite"></div>
                     </div>
                 </div>
             </section>
