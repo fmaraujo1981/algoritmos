@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div>
                     <strong>${item.titulo}</strong> <small style="color:var(--accent);">[${item.categoria}]</small>
                 </div>
-                <button class="crud-delete-btn" onclick="deletarCrudItem(${item.id})"><i class="fa-solid fa-trash"></i></button>
+                <button class="crud-delete-btn" type="button" aria-label="Excluir item: ${item.titulo}" title="Excluir item" onclick="deletarCrudItem(${item.id})"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
             </div>
         `).join('');
     }
