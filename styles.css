@@ -333,6 +333,15 @@ pre code {
     outline: 2px solid var(--accent);
 }
 
+button:focus-visible,
+.nav-btn:focus-visible,
+.theme-toggle:focus-visible,
+.crud-delete-btn:focus-visible,
+.copy-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 .btn {
     padding: 10px 20px;
     border-radius: 8px;
