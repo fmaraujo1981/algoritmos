@@ -402,6 +402,11 @@ pre code {
     cursor: pointer;
 }
 
+.crud-delete-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 /* API Grid */
 .api-grid {
     display: grid;

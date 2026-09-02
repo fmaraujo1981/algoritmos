@@ -1,0 +1,3 @@
+## 2026-09-02 - Accessible Icon-Only Delete Buttons in Dynamic Lists
+**Learning:** Icon-only action buttons rendered dynamically via JavaScript template strings (like the CRUD delete button) often lack text for screen readers, hover tooltips for mouse users, and visible focus rings for keyboard navigation. Adding `aria-label`, `title`, `aria-hidden="true"` on the nested icon, and `:focus-visible` styles provides a complete accessible interaction pattern.
+**Action:** Always ensure dynamic template-rendered icon buttons include proper ARIA attributes, tooltips, and explicit `:focus-visible` outlines.
