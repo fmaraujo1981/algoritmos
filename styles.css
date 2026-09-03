@@ -393,6 +393,15 @@ pre code {
     border: 1px solid var(--border-color);
 }
 
+.nav-btn:focus-visible,
+.btn:focus-visible,
+.theme-toggle:focus-visible,
+.copy-btn:focus-visible,
+.crud-delete-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 .crud-delete-btn {
     background: #ef4444;
     color: white;
@@ -400,6 +409,11 @@ pre code {
     padding: 4px 10px;
     border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.crud-delete-btn:hover {
+    background: #dc2626;
 }
 
 /* API Grid */
