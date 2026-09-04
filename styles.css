@@ -402,6 +402,17 @@ pre code {
     cursor: pointer;
 }
 
+/* Keyboard focus accessibility states */
+.nav-btn:focus-visible,
+.theme-toggle:focus-visible,
+.copy-btn:focus-visible,
+.btn:focus-visible,
+.crud-delete-btn:focus-visible,
+.form-control:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 /* API Grid */
 .api-grid {
     display: grid;
