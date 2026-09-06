@@ -69,7 +69,7 @@
                     <div class="code-block">
                         <div class="code-header">
                             <span>exemplo_formulario.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 // Verifica se o formulário foi enviado via método POST
@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="code-block">
                         <div class="code-header">
                             <span>idade_2026.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 $idade2026 = null;
@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; isset($_POST["ano_nascimento
                     <div class="code-block">
                         <div class="code-header">
                             <span>idade_ano_atual.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 $idadeAtual = null;
@@ -158,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; isset($_POST["ano_nasc_dinam
                     <div class="code-block">
                         <div class="code-header">
                             <span>idade_exata.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 $resultadoExato = null;
@@ -230,7 +230,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" &amp;&amp; !empty($_POST["data_nascimen
                     <div class="code-block">
                         <div class="code-header">
                             <span>desafio_signos.php (Gabarito de Referência)</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 function descobrirSigno($dia, $mes) {
@@ -319,7 +319,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="code-block">
                         <div class="code-header">
                             <span>inspetor_servidor.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 function obterInfoCliente() {
@@ -358,7 +358,7 @@ $info = obterInfoCliente();
                     <div class="code-block">
                         <div class="code-header">
                             <span>contador_visitas.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 session_start();
@@ -417,7 +417,7 @@ setcookie('ultima_visita', $dataHoraAtual, time() + (86400 * 30), "/");
                     <div class="code-block">
                         <div class="code-header">
                             <span>salvar_contato.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 $arquivo = 'contatos.json';
@@ -457,7 +457,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="code-block">
                         <div class="code-header">
                             <span>mini_crud.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 $arquivo = 'tarefas.json';
@@ -530,7 +530,7 @@ if (isset($_GET['deletar'])) {
                     <div class="code-block">
                         <div class="code-header">
                             <span>cadastro_e_login.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 session_start();
@@ -580,7 +580,7 @@ if (isset($_POST['acao']) &amp;&amp; $_POST['acao'] === 'login') {
                     <div class="code-block">
                         <div class="code-header">
                             <span>clima_api.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 // Coordenadas de São Paulo
@@ -687,7 +687,7 @@ if ($respostaJson !== false) {
                     <div class="code-block">
                         <div class="code-header">
                             <span>sistema_crud_final.php</span>
-                            <button class="copy-btn" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
+                            <button type="button" class="copy-btn" aria-label="Copiar código" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copiar</button>
                         </div>
                         <pre><code>&lt;?php
 session_start();

@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div>
                     <strong>${item.titulo}</strong> <small style="color:var(--accent);">[${item.categoria}]</small>
                 </div>
-                <button class="crud-delete-btn" onclick="deletarCrudItem(${item.id})"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" class="crud-delete-btn" aria-label="Excluir registro" onclick="deletarCrudItem(${item.id})"><i class="fa-solid fa-trash"></i></button>
             </div>
         `).join('');
     }
@@ -245,9 +245,12 @@ function copyCode(button) {
 
     navigator.clipboard.writeText(textToCopy).then(() => {
         const originalText = button.innerHTML;
+        const originalAriaLabel = button.getAttribute('aria-label') || 'Copiar código';
         button.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
+        button.setAttribute('aria-label', 'Código copiado!');
         setTimeout(() => {
             button.innerHTML = originalText;
+            button.setAttribute('aria-label', originalAriaLabel);
         }, 2000);
     });
 }
