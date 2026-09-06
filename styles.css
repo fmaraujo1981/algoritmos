@@ -142,6 +142,15 @@ body {
     font-weight: 600;
 }
 
+.theme-toggle:focus-visible,
+.nav-btn:focus-visible,
+.copy-btn:focus-visible,
+.crud-delete-btn:focus-visible,
+.btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 /* Main Content */
 .main-content {
     margin-left: var(--sidebar-width);
